@@ -1,7 +1,7 @@
-function App() {
-  return (
-    <h1 className="text-4xl font-bold">I Hand U</h1>
-  );
-}
+import HomePage from "./pages/HomePage";
+
+const App = () => {
+  return <HomePage />;
+};
 
 export default App;
