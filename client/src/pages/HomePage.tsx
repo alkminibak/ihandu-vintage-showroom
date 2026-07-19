@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import Hero from "../components/Hero";
+import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import { mockProducts } from "../data/mockProducts";
 
@@ -28,6 +29,7 @@ const HomePage = () => {
           </div>
         </section>
       </main>
+      <Footer />
     </>
   );
 };
