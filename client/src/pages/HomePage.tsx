@@ -1,23 +1,34 @@
+import Header from "../components/Header";
+import Hero from "../components/Hero";
 import ProductCard from "../components/ProductCard";
 import { mockProducts } from "../data/mockProducts";
 
 const HomePage = () => {
   return (
-    <main>
-      <header>
-        <h1>I Hand U</h1>
-        <p>Curated Vintage Collection</p>
-      </header>
+    <>
+      <Header />
 
-      <section>
-        {mockProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-          />
-        ))}
-      </section>
-    </main>
+      <main>
+        <Hero />
+
+        <section className="mx-auto max-w-6xl px-16 py-14">
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="text-xl font-medium text-text-muted">
+              Latest Arrivals
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-4 gap-x-8 gap-y-12">
+            {mockProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </div>
+        </section>
+      </main>
+    </>
   );
 };
 
