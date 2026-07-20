@@ -6,7 +6,7 @@ const Hero = () => {
         <img
             src={heroImage}
             alt="Three vintage outfits from the I Hand U collection"
-            className="block h-full w-full object-cove"
+            className="block h-full w-full object-cover"
         /> 
 
         <div className="absolute bottom-26 left-6">
