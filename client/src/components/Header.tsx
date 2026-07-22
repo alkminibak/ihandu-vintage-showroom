@@ -1,36 +1,50 @@
-import { Link } from "react-router";
+import { NavLink, Link } from "react-router";
 
 const Header = () => {
   return (
     <header className="mx-auto flex max-w-7xl items-center justify-between p-6">
-      <div>
-        <h1 className="text-5xl font-light">I Hand U</h1>
+      <Link
+        to="/"
+        className="transition-colors hover:text-accent"
+      >
+        <div>
+          <h1 className="text-5xl font-light">I Hand U</h1>
 
-        <p className="mt-1 text-sm tracking-wide text-text-muted">
-          Curated Vintage Collection
-        </p>
-      </div>
+          <p className="mt-1 text-sm tracking-wide text-text-muted">
+            Curated Vintage Collection
+          </p>
+        </div>
+      </Link>
 
       <nav className="flex items-center gap-5 text-sm">
-        <Link
+        <NavLink
           to="/login"
-          className="transition-colors hover:text-accent"
+          className={({ isActive }) =>
+            `transition-colors hover:text-accent ${
+              isActive ? "text-accent" : ""
+            }`
+          }
         >
           Login
-        </Link>
+        </NavLink>
 
         <span
             aria-hidden="true"
             className="h-5 w-px bg-accent-light"
         />
 
-        <Link
+        <NavLink
           to="/wishlist"
-          className="flex items-center gap-2 transition-colors hover:text-accent"
+          className={({ isActive }) =>
+            `flex items-center gap-2 transition-colors hover:text-accent ${
+              isActive ? "text-accent" : ""
+            }`
+          }
         >
           My Wishlist
           <span className="text-accent">♡</span>
-        </Link>
+        </NavLink>
+
       </nav>
     </header>
   );
