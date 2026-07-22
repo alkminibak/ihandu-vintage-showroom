@@ -1,7 +1,24 @@
+import ProductForm from "../components/ProductForm";
+import AdminProductCard from "../components/AdminProductCard";
+
 const AdminDashboardPage = () => {
   return (
-    <main>
-      <h1>Admin Dashboard</h1>
+    <main className="mx-auto max-w-7xl px-6 py-10">
+      <h1 className="text-4xl font-light text-text">Admin Dashboard</h1>
+
+      <div className="mt-10">
+        <ProductForm />
+      </div>
+
+      <section className="mt-16">
+        <h2 className="text-2xl font-light text-text">Products</h2>
+
+        <div className="mt-8 grid grid-cols-3 gap-6">
+          <AdminProductCard />
+          <AdminProductCard />
+          <AdminProductCard />
+        </div>
+      </section>
     </main>
   );
 };
