@@ -4,9 +4,13 @@ import type { Product } from "../types/Product";
 
 interface ProductCardProps {
   product: Product;
+  showWishlistButton?: boolean;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({
+   product,
+   showWishlistButton = true 
+  }: ProductCardProps) => {
   return (
     <article>
       <Link to={`/products/${product.id}`}>
@@ -26,13 +30,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
           €{product.price}
         </p>
 
-        <button
-          type="button"
-          aria-label={`Add ${product.title} to wishlist`}
-          className="text-2xl leading-none text-accent transition-colors hover:text-text"
-        >
-          ♡
-        </button>
+        {showWishlistButton && (
+          <button
+            type="button"
+            aria-label={`Add ${product.title} to wishlist`}
+            className="text-2xl leading-none text-accent transition-colors hover:text-text"
+          >
+            ♡
+          </button>
+        )}
       </div>
     </article>
   );
