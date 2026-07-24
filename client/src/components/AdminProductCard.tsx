@@ -2,9 +2,13 @@ import type { Product } from "../types/Product";
 
 interface AdminProductCardProps {
   product: Product;
+  onDeleteProduct: (productId: string) => void;
 }
 
-const AdminProductCard = ({ product }: AdminProductCardProps) => {
+const AdminProductCard = ({
+  product,
+  onDeleteProduct,
+}: AdminProductCardProps) => {
   return (
     <article className="overflow-hidden rounded-lg border border-accent bg-white">
       <img
@@ -30,6 +34,7 @@ const AdminProductCard = ({ product }: AdminProductCardProps) => {
 
           <button
             type="button"
+            onClick={() => onDeleteProduct(product.id)}
             className="flex-1 rounded-md border border-text-muted px-4 py-2 text-sm text-text transition-colors duration-300 hover:bg-text-muted/20"
           >
             Delete

@@ -11,6 +11,12 @@ const AdminDashboardPage = () => {
     setProducts((previousProducts) => [newProduct, ...previousProducts]);
   };
 
+  const handleDeleteProduct = (productId: string) => {
+    setProducts((previousProducts) =>
+      previousProducts.filter((product) => product.id !== productId),
+    );
+  };
+
   return (
     <main className="mx-auto max-w-7xl px-6 py-10">
       <h1 className="text-4xl font-light text-text">Admin Dashboard</h1>
@@ -24,7 +30,11 @@ const AdminDashboardPage = () => {
 
         <div className="mt-8 grid grid-cols-3 gap-6">
           {products.map((product) => (
-            <AdminProductCard key={product.id} product={product} />
+            <AdminProductCard
+              key={product.id}
+              product={product}
+              onDeleteProduct={handleDeleteProduct}
+            />
           ))}
         </div>
       </section>
