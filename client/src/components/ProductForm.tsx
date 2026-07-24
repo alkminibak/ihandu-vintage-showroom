@@ -1,9 +1,51 @@
+import { useState } from "react";
+import type { Product } from "../types/Product";
+
+const initialFormData = {
+  title: "",
+  price: "",
+  category: "",
+  imageUrl: "",
+  description: "",
+};
+
 const ProductForm = () => {
+  const [formData, setFormData] = useState(initialFormData);
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.currentTarget;
+
+    setFormData((previousFormData) => ({
+      ...previousFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const product: Product = {
+      id: crypto.randomUUID(),
+      title: formData.title,
+      description: formData.description,
+      price: Number(formData.price),
+      category: formData.category,
+      imageUrl: formData.imageUrl,
+      createdAt: new Date().toISOString(),
+    };
+
+    console.log(product);
+
+    setFormData(initialFormData);
+  };
+
   return (
     <section className="max-w-3xl rounded-lg border border-accent bg-accent-light p-8">
       <h2 className="text-2xl font-light text-text">Add New Product</h2>
 
-      <form className="mt-8">
+      <form onSubmit={handleSubmit} className="mt-8">
         <div className="space-y-6">
           <div>
             <label
@@ -15,7 +57,10 @@ const ProductForm = () => {
 
             <input
               id="title"
+              name="title"
               type="text"
+              value={formData.title}
+              onChange={handleChange}
               className="mt-2 w-full rounded-md border border-accent bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
@@ -31,10 +76,13 @@ const ProductForm = () => {
 
               <input
                 id="price"
+                name="price"
                 type="number"
                 min="0"
                 step="0.01"
                 placeholder="0.00"
+                value={formData.price}
+                onChange={handleChange}
                 className="mt-2 w-full rounded-md border border-accent bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
@@ -49,7 +97,10 @@ const ProductForm = () => {
 
               <input
                 id="category"
+                name="category"
                 type="text"
+                value={formData.category}
+                onChange={handleChange}
                 className="mt-2 w-full rounded-md border border-accent bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
@@ -65,8 +116,11 @@ const ProductForm = () => {
 
             <input
               id="imageUrl"
+              name="imageUrl"
               type="url"
               placeholder="https://..."
+              value={formData.imageUrl}
+              onChange={handleChange}
               className="mt-2 w-full rounded-md border border-accent bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
@@ -81,7 +135,10 @@ const ProductForm = () => {
 
             <textarea
               id="description"
+              name="description"
               rows={6}
+              value={formData.description}
+              onChange={handleChange}
               className="mt-2 w-full rounded-md border border-accent bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
