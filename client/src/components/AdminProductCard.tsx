@@ -30,7 +30,7 @@ const AdminProductCard = ({ product }: AdminProductCardProps) => {
 
           <button
             type="button"
-            className="flex-1 rounded-md border border-text-muted px-4 py-2 text-sm text-text transition-colors duration-300 hover:bg-accent-light"
+            className="flex-1 rounded-md border border-text-muted px-4 py-2 text-sm text-text transition-colors duration-300 hover:bg-text-muted/20"
           >
             Delete
           </button>
