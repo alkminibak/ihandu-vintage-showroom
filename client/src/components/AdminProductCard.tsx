@@ -1,18 +1,24 @@
-const AdminProductCard = () => {
+import type { Product } from "../types/Product";
+
+interface AdminProductCardProps {
+  product: Product;
+}
+
+const AdminProductCard = ({ product }: AdminProductCardProps) => {
   return (
     <article className="overflow-hidden rounded-lg border border-accent bg-white">
       <img
-        src="https://placehold.co/600x800"
-        alt="Product"
+        src={product.imageUrl}
+        alt={product.title}
         className="w-full object-cover"
       />
 
       <div className="p-5">
-        <p className="text-sm text-text-muted">Category</p>
+        <p className="text-sm text-text-muted">{product.category}</p>
 
-        <h3 className="mt-1 text-lg font-medium text-text">Product Title</h3>
+        <h3 className="mt-1 text-lg font-medium text-text">{product.title}</h3>
 
-        <p className="mt-2 text-sm text-text">€45.00</p>
+        <p className="mt-2 text-sm text-text">€{product.price}</p>
 
         <div className="mt-5 flex gap-3">
           <button

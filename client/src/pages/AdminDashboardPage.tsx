@@ -1,5 +1,6 @@
 import ProductForm from "../components/ProductForm";
 import AdminProductCard from "../components/AdminProductCard";
+import { mockProducts } from "../data/mockProducts";
 
 const AdminDashboardPage = () => {
   return (
@@ -14,9 +15,9 @@ const AdminDashboardPage = () => {
         <h2 className="text-2xl font-light text-text">Products</h2>
 
         <div className="mt-8 grid grid-cols-3 gap-6">
-          <AdminProductCard />
-          <AdminProductCard />
-          <AdminProductCard />
+          {mockProducts.map((product) => (
+            <AdminProductCard key={product.id} product={product} />
+          ))}
         </div>
       </section>
     </main>
