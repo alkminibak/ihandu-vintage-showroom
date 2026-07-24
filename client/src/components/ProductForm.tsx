@@ -9,7 +9,11 @@ const initialFormData = {
   description: "",
 };
 
-const ProductForm = () => {
+interface ProductFormProps {
+  onAddProduct: (newProduct: Product) => void;
+}
+
+const ProductForm = ({ onAddProduct }: ProductFormProps) => {
   const [formData, setFormData] = useState(initialFormData);
 
   const handleChange = (
@@ -36,7 +40,7 @@ const ProductForm = () => {
       createdAt: new Date().toISOString(),
     };
 
-    console.log(product);
+    onAddProduct(product);
 
     setFormData(initialFormData);
   };
