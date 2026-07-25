@@ -6,11 +6,13 @@ const PLACEHOLDER_IMAGE = "/image-placeholder.png";
 interface AdminProductCardProps {
   product: Product;
   onDeleteProduct: (productId: string) => void;
+  onEditProduct: (product: Product) => void;
 }
 
 const AdminProductCard = ({
   product,
   onDeleteProduct,
+  onEditProduct,
 }: AdminProductCardProps) => {
   const [imageSrc, setImageSrc] = useState(product.imageUrl);
 
@@ -33,6 +35,7 @@ const AdminProductCard = ({
         <div className="mt-5 flex gap-3">
           <button
             type="button"
+            onClick={() => onEditProduct(product)}
             className="flex-1 rounded-md border border-accent px-4 py-2 text-sm text-text transition-colors duration-300 hover:bg-accent-light"
           >
             Edit

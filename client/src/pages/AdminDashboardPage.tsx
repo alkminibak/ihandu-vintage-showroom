@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ProductForm from "../components/ProductForm";
 import AdminProductCard from "../components/AdminProductCard";
 import { mockProducts } from "../data/mockProducts";
 import type { Product } from "../types/Product";
 
 const AdminDashboardPage = () => {
+  // States
   const [products, setProducts] = useState(mockProducts);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
+  // Ref
+  const formRef = useRef<HTMLDivElement>(null);
+
+  // Handlers
   const handleAddProduct = (newProduct: Product) => {
     setProducts((previousProducts) => [newProduct, ...previousProducts]);
   };
@@ -17,12 +23,35 @@ const AdminDashboardPage = () => {
     );
   };
 
+  const handleUpdateProduct = (updatedProduct: Product) => {
+    setProducts((previousProducts) =>
+      previousProducts.map((product) =>
+        product.id === updatedProduct.id ? updatedProduct : product,
+      ),
+    );
+
+    setEditingProduct(null);
+  };
+
+  const handleEditProduct = (product: Product) => {
+    setEditingProduct(product);
+
+    formRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <main className="mx-auto max-w-7xl px-6 py-10">
       <h1 className="text-4xl font-light text-text">Admin Dashboard</h1>
 
-      <div className="mt-10">
-        <ProductForm onAddProduct={handleAddProduct} />
+      <div ref={formRef} className="mt-10">
+        <ProductForm
+          onAddProduct={handleAddProduct}
+          onUpdateProduct={handleUpdateProduct}
+          editingProduct={editingProduct}
+        />
       </div>
 
       <section className="mt-16">
@@ -34,6 +63,7 @@ const AdminDashboardPage = () => {
               key={product.id}
               product={product}
               onDeleteProduct={handleDeleteProduct}
+              onEditProduct={handleEditProduct}
             />
           ))}
         </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Product } from "../types/Product";
 
 const initialFormData = {
@@ -11,10 +11,29 @@ const initialFormData = {
 
 interface ProductFormProps {
   onAddProduct: (newProduct: Product) => void;
+  onUpdateProduct: (updatedProduct: Product) => void;
+  editingProduct: Product | null;
 }
 
-const ProductForm = ({ onAddProduct }: ProductFormProps) => {
+const ProductForm = ({
+  onAddProduct,
+  onUpdateProduct,
+  editingProduct,
+}: ProductFormProps) => {
   const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    if (editingProduct) {
+      console.log(editingProduct?.imageUrl);
+      setFormData({
+        title: editingProduct.title,
+        price: editingProduct.price.toString(),
+        category: editingProduct.category,
+        imageUrl: editingProduct.imageUrl,
+        description: editingProduct.description,
+      });
+    }
+  }, [editingProduct]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -31,16 +50,20 @@ const ProductForm = ({ onAddProduct }: ProductFormProps) => {
     event.preventDefault();
 
     const product: Product = {
-      id: crypto.randomUUID(),
+      id: editingProduct?.id ?? crypto.randomUUID(),
       title: formData.title,
       description: formData.description,
       price: Number(formData.price),
       category: formData.category,
       imageUrl: formData.imageUrl,
-      createdAt: new Date().toISOString(),
+      createdAt: editingProduct?.createdAt ?? new Date().toISOString(),
     };
 
-    onAddProduct(product);
+    if (editingProduct) {
+      onUpdateProduct(product);
+    } else {
+      onAddProduct(product);
+    }
 
     setFormData(initialFormData);
   };
@@ -124,7 +147,7 @@ const ProductForm = ({ onAddProduct }: ProductFormProps) => {
             <input
               id="imageUrl"
               name="imageUrl"
-              type="url"
+              type="text"
               required
               placeholder="https://..."
               value={formData.imageUrl}
