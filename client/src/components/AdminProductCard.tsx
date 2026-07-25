@@ -1,4 +1,7 @@
+import { useState } from "react";
 import type { Product } from "../types/Product";
+
+const PLACEHOLDER_IMAGE = "/image-placeholder.png";
 
 interface AdminProductCardProps {
   product: Product;
@@ -9,11 +12,14 @@ const AdminProductCard = ({
   product,
   onDeleteProduct,
 }: AdminProductCardProps) => {
+  const [imageSrc, setImageSrc] = useState(product.imageUrl);
+
   return (
     <article className="overflow-hidden rounded-lg border border-accent bg-white">
       <img
-        src={product.imageUrl}
+        src={imageSrc}
         alt={product.title}
+        onError={() => setImageSrc(PLACEHOLDER_IMAGE)}
         className="w-full object-cover"
       />
 
