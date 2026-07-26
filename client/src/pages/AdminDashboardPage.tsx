@@ -42,6 +42,10 @@ const AdminDashboardPage = () => {
     });
   };
 
+  const handleCancelEdit = () => {
+    setEditingProduct(null);
+  };
+
   return (
     <main className="mx-auto max-w-7xl px-6 py-10">
       <h1 className="text-4xl font-light text-text">Admin Dashboard</h1>
@@ -50,6 +54,7 @@ const AdminDashboardPage = () => {
         <ProductForm
           onAddProduct={handleAddProduct}
           onUpdateProduct={handleUpdateProduct}
+          onCancelEdit={handleCancelEdit}
           editingProduct={editingProduct}
         />
       </div>

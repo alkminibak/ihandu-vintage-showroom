@@ -12,19 +12,22 @@ const initialFormData = {
 interface ProductFormProps {
   onAddProduct: (newProduct: Product) => void;
   onUpdateProduct: (updatedProduct: Product) => void;
+  onCancelEdit: () => void;
   editingProduct: Product | null;
 }
 
 const ProductForm = ({
   onAddProduct,
   onUpdateProduct,
+  onCancelEdit,
   editingProduct,
 }: ProductFormProps) => {
   const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     if (editingProduct) {
-      console.log(editingProduct?.imageUrl);
+      // Populate the form when a product is selected for editing
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         title: editingProduct.title,
         price: editingProduct.price.toString(),
@@ -44,6 +47,11 @@ const ProductForm = ({
       ...previousFormData,
       [name]: value,
     }));
+  };
+
+  const handleCancel = () => {
+    setFormData(initialFormData);
+    onCancelEdit();
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -70,7 +78,9 @@ const ProductForm = ({
 
   return (
     <section className="max-w-3xl rounded-lg border border-accent bg-accent-light p-8">
-      <h2 className="text-2xl font-light text-text">Add New Product</h2>
+      <h2 className="text-2xl font-light text-text">
+        {editingProduct ? "Edit Product" : "Add New Product"}
+      </h2>
 
       <form onSubmit={handleSubmit} className="mt-8">
         <div className="space-y-6">
@@ -175,12 +185,22 @@ const ProductForm = ({
             />
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-3">
+            {editingProduct && (
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="rounded-md border border-text-muted px-6 py-2.5 text-text transition-colors duration-300 hover:bg-text-muted/20"
+              >
+                Cancel
+              </button>
+            )}
+
             <button
               type="submit"
               className="rounded-md border border-accent bg-accent px-6 py-2.5 text-text transition-colors duration-300 hover:bg-accent-light"
             >
-              Add Product
+              {editingProduct ? "Save Changes" : "Add Product"}
             </button>
           </div>
         </div>
