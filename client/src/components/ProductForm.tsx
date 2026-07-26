@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../types/Product";
 
-const initialFormData = {
+interface ProductFormData {
+  title: string;
+  price: string;
+  category: string;
+  imageUrl: string;
+  description: string;
+}
+
+const initialFormData: ProductFormData = {
   title: "",
   price: "",
   category: "",
