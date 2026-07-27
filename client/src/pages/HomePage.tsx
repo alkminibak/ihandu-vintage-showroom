@@ -1,10 +1,25 @@
+import { useEffect, useState } from "react";
+
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
-import { mockProducts } from "../data/mockProducts";
+
+import { getProducts } from "../services/products.service";
+import type { Product } from "../types/Product";
 
 const HomePage = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      const data = await getProducts();
+      setProducts(data);
+    };
+
+    loadProducts();
+  }, []);
+
   return (
     <>
       <Header />
@@ -20,11 +35,8 @@ const HomePage = () => {
           </div>
 
           <div className="grid grid-cols-4 gap-x-8 gap-y-12">
-            {mockProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-              />
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </section>
