@@ -29,3 +29,20 @@ export const createProduct = (request: Request, response: Response) => {
 
   response.status(201).json(newProduct);
 };
+
+export const deleteProduct = (request: Request, response: Response) => {
+  const { id } = request.params;
+
+  const productIndex = products.findIndex((product) => product.id === id);
+
+  if (productIndex === -1) {
+    response.status(404).json({
+      message: "Product not found",
+    });
+    return;
+  }
+
+  products.splice(productIndex, 1);
+
+  response.status(204).send();
+};

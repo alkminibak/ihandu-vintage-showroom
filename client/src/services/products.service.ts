@@ -41,3 +41,13 @@ export async function createProduct(
 
   return newProduct;
 }
+
+export async function deleteProduct(id: string): Promise<void> {
+  const response = await fetch(`http://localhost:3000/products/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete product");
+  }
+}

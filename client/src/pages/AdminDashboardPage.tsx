@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ProductForm from "../components/ProductForm";
 import AdminProductCard from "../components/AdminProductCard";
 import type { Product } from "../types/Product";
-import { getProducts } from "../services/products.service";
+import { deleteProduct, getProducts } from "../services/products.service";
 
 const AdminDashboardPage = () => {
   // States
@@ -26,7 +26,9 @@ const AdminDashboardPage = () => {
     setProducts((previousProducts) => [newProduct, ...previousProducts]);
   };
 
-  const handleDeleteProduct = (productId: string) => {
+  const handleDeleteProduct = async (productId: string) => {
+    await deleteProduct(productId);
+
     setProducts((previousProducts) =>
       previousProducts.filter((product) => product.id !== productId),
     );
