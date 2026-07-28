@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { Product } from "../types/Product";
 import {
   createProduct,
+  updateProduct,
   type CreateProductData,
 } from "../services/products.service";
 
@@ -78,10 +79,10 @@ const ProductForm = ({
     };
 
     if (editingProduct) {
-      const updatedProduct: Product = {
-        ...editingProduct,
-        ...productData,
-      };
+      const updatedProduct = await updateProduct(
+        editingProduct.id,
+        productData,
+      );
 
       onUpdateProduct(updatedProduct);
     } else {

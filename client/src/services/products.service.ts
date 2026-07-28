@@ -51,3 +51,24 @@ export async function deleteProduct(id: string): Promise<void> {
     throw new Error("Failed to delete product");
   }
 }
+
+export async function updateProduct(
+  id: string,
+  productData: CreateProductData,
+): Promise<Product> {
+  const response = await fetch(`http://localhost:3000/products/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(productData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update product");
+  }
+
+  const updatedProduct: Product = await response.json();
+
+  return updatedProduct;
+}
