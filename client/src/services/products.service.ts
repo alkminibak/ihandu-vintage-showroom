@@ -20,7 +20,7 @@ export async function getProductById(id: string): Promise<Product> {
   return product;
 }
 
-type CreateProductData = Omit<Product, "id" | "createdAt">;
+export type CreateProductData = Omit<Product, "id" | "createdAt">;
 
 export async function createProduct(
   productData: CreateProductData,

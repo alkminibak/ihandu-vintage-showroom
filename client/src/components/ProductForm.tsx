@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../types/Product";
-import { createProduct } from "../services/products.service";
+import {
+  createProduct,
+  type CreateProductData,
+} from "../services/products.service";
 
 interface ProductFormData {
   title: string;
@@ -66,28 +69,25 @@ const ProductForm = ({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const product: Product = {
-      id: editingProduct?.id ?? crypto.randomUUID(),
+    const productData: CreateProductData = {
       title: formData.title,
       description: formData.description,
       price: Number(formData.price),
       category: formData.category,
       imageUrl: formData.imageUrl,
-      createdAt: editingProduct?.createdAt ?? new Date().toISOString(),
     };
 
     if (editingProduct) {
-      onUpdateProduct(product);
-    } else {
-      const newProduct = await createProduct({
-        title: product.title,
-        description: product.description,
-        price: product.price,
-        category: product.category,
-        imageUrl: product.imageUrl,
-      });
+      const updatedProduct: Product = {
+        ...editingProduct,
+        ...productData,
+      };
 
-      onAddProduct(product);
+      onUpdateProduct(updatedProduct);
+    } else {
+      const newProduct = await createProduct(productData);
+
+      onAddProduct(newProduct);
     }
 
     setFormData(initialFormData);
