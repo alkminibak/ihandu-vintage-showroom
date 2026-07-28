@@ -17,3 +17,15 @@ export const getProductById = (request: Request, response: Response) => {
 export const getProducts = (_request: Request, response: Response) => {
   response.json(products);
 };
+
+export const createProduct = (request: Request, response: Response) => {
+  const newProduct = {
+    ...request.body,
+    id: crypto.randomUUID(),
+    createdAt: new Date().toISOString(),
+  };
+
+  products.unshift(newProduct);
+
+  response.status(201).json(newProduct);
+};

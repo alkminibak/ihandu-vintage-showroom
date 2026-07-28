@@ -1,13 +1,22 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProductForm from "../components/ProductForm";
 import AdminProductCard from "../components/AdminProductCard";
-import { mockProducts } from "../data/mockProducts";
 import type { Product } from "../types/Product";
+import { getProducts } from "../services/products.service";
 
 const AdminDashboardPage = () => {
   // States
-  const [products, setProducts] = useState(mockProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+
+  useEffect(() => {
+    async function loadProducts() {
+      const products = await getProducts();
+      setProducts(products);
+    }
+
+    loadProducts();
+  }, []);
 
   // Ref
   const formRef = useRef<HTMLDivElement>(null);

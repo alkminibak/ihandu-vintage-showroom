@@ -19,3 +19,25 @@ export async function getProductById(id: string): Promise<Product> {
 
   return product;
 }
+
+type CreateProductData = Omit<Product, "id" | "createdAt">;
+
+export async function createProduct(
+  productData: CreateProductData,
+): Promise<Product> {
+  const response = await fetch("http://localhost:3000/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(productData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create product");
+  }
+
+  const newProduct = (await response.json()) as Product;
+
+  return newProduct;
+}

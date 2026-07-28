@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Product } from "../types/Product";
+import { createProduct } from "../services/products.service";
 
 interface ProductFormData {
   title: string;
@@ -62,7 +63,7 @@ const ProductForm = ({
     onCancelEdit();
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const product: Product = {
@@ -78,6 +79,14 @@ const ProductForm = ({
     if (editingProduct) {
       onUpdateProduct(product);
     } else {
+      const newProduct = await createProduct({
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        category: product.category,
+        imageUrl: product.imageUrl,
+      });
+
       onAddProduct(product);
     }
 
