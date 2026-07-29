@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { products } from "../data/products.js";
+import { ProductModel } from "../models/Product.js";
 
 export const getProductById = (request: Request, response: Response) => {
   const { id } = request.params;
@@ -14,16 +15,13 @@ export const getProductById = (request: Request, response: Response) => {
   response.json(product);
 };
 
-export const getProducts = (_request: Request, response: Response) => {
+export const getProducts = async (_request: Request, response: Response) => {
+  const productDocuments = await ProductModel.find();
   response.json(products);
 };
 
-export const createProduct = (request: Request, response: Response) => {
-  const newProduct = {
-    ...request.body,
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
-  };
+export const createProduct = async (request: Request, response: Response) => {
+  const newProduct = await ProductModel.create(request.body);
 
   products.unshift(newProduct);
 
