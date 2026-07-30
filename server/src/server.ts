@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 
 import { connectDB } from "./config/db.js";
+import { errorMiddleware } from "./middlewares/error.middleware.js";
 import router from "./routes/index.js";
 
 dotenv.config();
@@ -13,6 +14,7 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 app.use(router);
+app.use(errorMiddleware);
 
 async function startServer(): Promise<void> {
   try {
