@@ -26,19 +26,17 @@ export const createProduct = async (request: Request, response: Response) => {
   response.status(201).json(newProduct);
 };
 
-export const deleteProduct = (request: Request, response: Response) => {
+export const deleteProduct = async (request: Request, response: Response) => {
   const { id } = request.params;
 
-  const productIndex = products.findIndex((product) => product.id === id);
+  const deletedProduct = await ProductModel.findByIdAndDelete(id);
 
-  if (productIndex === -1) {
+  if (!deletedProduct) {
     response.status(404).json({
       message: "Product not found",
     });
     return;
   }
-
-  products.splice(productIndex, 1);
 
   response.status(204).send();
 };
