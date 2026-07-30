@@ -41,26 +41,23 @@ export const deleteProduct = async (request: Request, response: Response) => {
   response.status(204).send();
 };
 
-export const updateProduct = (request: Request, response: Response) => {
+export const updateProduct = async (request: Request, response: Response) => {
   const { id } = request.params;
 
-  const productIndex = products.findIndex((product) => product.id === id);
+  const updatedProduct = await ProductModel.findByIdAndUpdate(
+    id,
+    request.body,
+    {
+      new: true,
+    },
+  );
 
-  if (productIndex === -1) {
+  if (!updatedProduct) {
     response.status(404).json({
       message: "Product not found",
     });
     return;
   }
-
-  const updatedProduct = {
-    ...products[productIndex],
-    ...request.body,
-    id: products[productIndex].id,
-    createdAt: products[productIndex].createdAt,
-  };
-
-  products[productIndex] = updatedProduct;
 
   response.status(200).json(updatedProduct);
 };
