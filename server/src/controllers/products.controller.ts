@@ -2,10 +2,10 @@ import type { Request, Response } from "express";
 import { products } from "../data/products.js";
 import { ProductModel } from "../models/Product.js";
 
-export const getProductById = (request: Request, response: Response) => {
+export const getProductById = async (request: Request, response: Response) => {
   const { id } = request.params;
 
-  const product = products.find((product) => product.id === id);
+  const product = await ProductModel.findById(id);
 
   if (!product) {
     response.status(404).json({ message: "Product not found" });
