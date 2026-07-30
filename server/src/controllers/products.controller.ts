@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { ProductModel } from "../models/Product.js";
+import { NotFoundError } from "../errors/NotFoundError.js";
 
 export const getProductById = async (request: Request, response: Response) => {
   const { id } = request.params;
@@ -7,8 +8,7 @@ export const getProductById = async (request: Request, response: Response) => {
   const product = await ProductModel.findById(id);
 
   if (!product) {
-    response.status(404).json({ message: "Product not found" });
-    return;
+    throw new NotFoundError("Product not found");
   }
 
   response.json(product);
@@ -31,10 +31,7 @@ export const deleteProduct = async (request: Request, response: Response) => {
   const deletedProduct = await ProductModel.findByIdAndDelete(id);
 
   if (!deletedProduct) {
-    response.status(404).json({
-      message: "Product not found",
-    });
-    return;
+    throw new NotFoundError("Product not found");
   }
 
   response.status(204).send();
@@ -52,10 +49,7 @@ export const updateProduct = async (request: Request, response: Response) => {
   );
 
   if (!updatedProduct) {
-    response.status(404).json({
-      message: "Product not found",
-    });
-    return;
+    throw new NotFoundError("Product not found");
   }
 
   response.json(updatedProduct);
