@@ -15,8 +15,8 @@ export const getProductById = async (request: Request, response: Response) => {
 };
 
 export const getProducts = async (_request: Request, response: Response) => {
-  const productDocuments = await ProductModel.find();
-  response.json(productDocuments);
+  const products = await ProductModel.find();
+  response.json(products);
 };
 
 export const createProduct = async (request: Request, response: Response) => {
@@ -58,5 +58,5 @@ export const updateProduct = async (request: Request, response: Response) => {
     return;
   }
 
-  response.status(200).json(updatedProduct);
+  response.json(updatedProduct);
 };
