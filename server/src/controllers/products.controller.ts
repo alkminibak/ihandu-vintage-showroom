@@ -17,13 +17,11 @@ export const getProductById = (request: Request, response: Response) => {
 
 export const getProducts = async (_request: Request, response: Response) => {
   const productDocuments = await ProductModel.find();
-  response.json(products);
+  response.json(productDocuments);
 };
 
 export const createProduct = async (request: Request, response: Response) => {
   const newProduct = await ProductModel.create(request.body);
-
-  products.unshift(newProduct);
 
   response.status(201).json(newProduct);
 };
