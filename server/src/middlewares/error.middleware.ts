@@ -25,6 +25,17 @@ export const errorMiddleware = (
     return;
   }
 
+  if (error instanceof MongooseError.ValidationError) {
+    const messages = Object.values(error.errors).map(({ message }) => message);
+
+    response.status(400).json({
+      message: "Validation failed",
+      errors: messages,
+    });
+
+    return;
+  }
+
   response.status(500).json({
     message: "Internal server error",
   });

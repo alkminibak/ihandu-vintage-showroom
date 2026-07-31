@@ -45,6 +45,7 @@ export const updateProduct = async (request: Request, response: Response) => {
     request.body,
     {
       new: true,
+      runValidators: true,
     },
   );
 
