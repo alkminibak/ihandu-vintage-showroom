@@ -36,6 +36,19 @@ export const errorMiddleware = (
     return;
   }
 
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    error.code === 11000
+  ) {
+    response.status(409).json({
+      message: "Email is already in use",
+    });
+
+    return;
+  }
+
   response.status(500).json({
     message: "Internal server error",
   });
