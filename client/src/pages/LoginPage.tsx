@@ -1,11 +1,16 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { loginSchema, type LoginFormData } from "../schemas/auth.schemas";
+import {
+  loginSchema,
+  registerSchema,
+  type LoginFormData,
+  type RegisterFormData,
+} from "../schemas/auth.schemas";
 
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { login } from "../services/auth.service";
+import { login, register } from "../services/auth.service";
 
 const LoginPage = () => {
   const {
@@ -17,6 +22,15 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
   });
 
+  const {
+    register: registerRegister,
+    handleSubmit: handleRegisterSubmit,
+    setError: setRegisterError,
+    formState: { errors: registerErrors, isSubmitting: isRegistering },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+  });
+
   const handleLoginSubmit = async (data: LoginFormData) => {
     try {
       const authResponse = await login(data);
@@ -25,13 +39,27 @@ const LoginPage = () => {
       localStorage.setItem("user", JSON.stringify(authResponse.user));
 
       console.log(authResponse);
-    } catch {
+    } catch (error: unknown) {
       setError("root", {
-        message: "Invalid email or password",
+        message: error instanceof Error ? error.message : "Failed to login",
       });
     }
   };
 
+  const handleRegistrationSubmit = async (data: RegisterFormData) => {
+    try {
+      const registerResponse = await register(data);
+
+      console.log(registerResponse);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setRegisterError("root", {
+          message:
+            error instanceof Error ? error.message : "Failed to register user",
+        });
+      }
+    }
+  };
   return (
     <>
       <Header />
@@ -65,7 +93,7 @@ const LoginPage = () => {
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
                 {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.email.message}
                   </p>
                 )}
@@ -87,7 +115,7 @@ const LoginPage = () => {
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
                 {errors.password && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 text-sm text-error">
                     {errors.password.message}
                   </p>
                 )}
@@ -102,7 +130,7 @@ const LoginPage = () => {
               </button>
 
               {errors.root && (
-                <p className="text-sm text-red-600">{errors.root.message}</p>
+                <p className="text-sm text-error">{errors.root.message}</p>
               )}
             </form>
           </section>
@@ -116,7 +144,10 @@ const LoginPage = () => {
               Create an account
             </h2>
 
-            <form className="mt-10 max-w-md space-y-6">
+            <form
+              onSubmit={handleRegisterSubmit(handleRegistrationSubmit)}
+              className="mt-10 max-w-md space-y-6"
+            >
               <div>
                 <label
                   htmlFor="register-firstname"
@@ -127,11 +158,16 @@ const LoginPage = () => {
 
                 <input
                   id="register-firstname"
-                  name="firstname"
                   type="text"
                   autoComplete="given-name"
+                  {...registerRegister("firstName")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+                {registerErrors.firstName && (
+                  <p className="mt-1 text-sm text-error">
+                    {registerErrors.firstName.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -144,11 +180,16 @@ const LoginPage = () => {
 
                 <input
                   id="register-lastname"
-                  name="lastname"
                   type="text"
                   autoComplete="family-name"
+                  {...registerRegister("lastName")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+                {registerErrors.lastName && (
+                  <p className="mt-1 text-sm text-error">
+                    {registerErrors.lastName.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -161,11 +202,16 @@ const LoginPage = () => {
 
                 <input
                   id="register-email"
-                  name="email"
                   type="email"
                   autoComplete="email"
+                  {...registerRegister("email")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+                {registerErrors.email && (
+                  <p className="mt-1 text-sm text-error">
+                    {registerErrors.email.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -178,19 +224,30 @@ const LoginPage = () => {
 
                 <input
                   id="register-password"
-                  name="password"
                   type="password"
                   autoComplete="new-password"
+                  {...registerRegister("password")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+                {registerErrors.password && (
+                  <p className="mt-1 text-sm text-error">
+                    {registerErrors.password.message}
+                  </p>
+                )}
               </div>
 
               <button
                 type="submit"
+                disabled={isRegistering}
                 className="border border-accent bg-accent-light px-8 py-2.5 text-sm text-text transition-colors hover:bg-accent"
               >
-                Create account
+                {isRegistering ? "Creating account..." : "Create account"}
               </button>
+              {registerErrors.root && (
+                <p className="text-sm text-error">
+                  {registerErrors.root.message}
+                </p>
+              )}
             </form>
           </section>
         </div>

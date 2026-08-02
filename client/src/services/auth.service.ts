@@ -15,7 +15,11 @@ export async function login(loginData: LoginData): Promise<AuthResponse> {
   });
 
   if (!response.ok) {
-    throw new Error("Invalid email or password");
+    if (response.status === 401) {
+      throw new Error("Invalid email or password");
+    }
+
+    throw new Error("Failed to login");
   }
 
   const authResponse = (await response.json()) as AuthResponse;
@@ -35,6 +39,10 @@ export async function register(
   });
 
   if (!response.ok) {
+    if (response.status === 409) {
+      throw new Error("Email is already in use");
+    }
+
     throw new Error("Failed to register user");
   }
 
