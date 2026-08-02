@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import WishlistPage from "./pages/WishlistPage";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 const App = () => {
   return (
@@ -13,7 +14,14 @@ const App = () => {
       <Route path="/products/:id" element={<ProductDetailsPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/wishlist" element={<WishlistPage />} />
-      <Route path="/admin" element={<AdminDashboardPage />} />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedAdminRoute>
+            <AdminDashboardPage />
+          </ProtectedAdminRoute>
+        }
+      />
     </Routes>
   );
 };
