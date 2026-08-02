@@ -1,5 +1,14 @@
 import type { Product } from "../types/Product";
 
+function getAuthHeaders() {
+  const token = localStorage.getItem("token");
+
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+}
+
 export async function getProducts(): Promise<Product[]> {
   const response = await fetch("http://localhost:3000/products");
 
@@ -27,9 +36,7 @@ export async function createProduct(
 ): Promise<Product> {
   const response = await fetch("http://localhost:3000/products", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(productData),
   });
 
@@ -45,6 +52,7 @@ export async function createProduct(
 export async function deleteProduct(id: string): Promise<void> {
   const response = await fetch(`http://localhost:3000/products/${id}`, {
     method: "DELETE",
+    headers: getAuthHeaders(),
   });
 
   if (!response.ok) {
@@ -58,9 +66,7 @@ export async function updateProduct(
 ): Promise<Product> {
   const response = await fetch(`http://localhost:3000/products/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(productData),
   });
 
