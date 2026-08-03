@@ -1,3 +1,4 @@
+import { toProductResponse } from "../mappers/product.mapper.js";
 import type { Request, Response } from "express";
 import { ProductModel } from "../models/Product.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
@@ -11,18 +12,19 @@ export const getProductById = async (request: Request, response: Response) => {
     throw new NotFoundError("Product not found");
   }
 
-  response.json(product);
+  response.json(toProductResponse(product));
 };
 
 export const getProducts = async (_request: Request, response: Response) => {
   const products = await ProductModel.find();
-  response.json(products);
+
+  response.json(products.map(toProductResponse));
 };
 
 export const createProduct = async (request: Request, response: Response) => {
   const newProduct = await ProductModel.create(request.body);
 
-  response.status(201).json(newProduct);
+  response.status(201).json(toProductResponse(newProduct));
 };
 
 export const deleteProduct = async (request: Request, response: Response) => {
@@ -53,5 +55,5 @@ export const updateProduct = async (request: Request, response: Response) => {
     throw new NotFoundError("Product not found");
   }
 
-  response.json(updatedProduct);
+  response.json(toProductResponse(updatedProduct));
 };
