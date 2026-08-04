@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { Types } from "mongoose";
 import { WishlistModel } from "../models/Wishlist.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
+import { toWishlistResponse } from "../mappers/wishlist.mapper.js";
 
 export const getWishlist = async (request: Request, response: Response) => {
   const userId = request.user?.userId;
@@ -9,7 +10,7 @@ export const getWishlist = async (request: Request, response: Response) => {
     userId,
   }).populate("productId");
 
-  response.json(wishlist);
+  response.json(wishlist.map(toWishlistResponse));
 };
 
 export const addToWishlist = async (
@@ -26,7 +27,9 @@ export const addToWishlist = async (
 
   const wishlistItem = await WishlistModel.create(wishlistData);
 
-  response.status(201).json(wishlistItem);
+  await wishlistItem.populate("productId");
+
+  response.status(201).json(toWishlistResponse(wishlistItem));
 };
 
 export const removeFromWishlist = async (
