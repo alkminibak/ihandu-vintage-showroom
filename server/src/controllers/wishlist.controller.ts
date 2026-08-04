@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 import { WishlistModel } from "../models/Wishlist.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import { toWishlistResponse } from "../mappers/wishlist.mapper.js";
+import { ProductModel } from "../models/Product.js";
 
 export const getWishlist = async (request: Request, response: Response) => {
   const userId = request.user?.userId;
@@ -19,6 +20,12 @@ export const addToWishlist = async (
 ) => {
   const userId = request.user?.userId;
   const { productId } = request.params;
+
+  const product = await ProductModel.findById(productId);
+
+  if (!product) {
+    throw new NotFoundError("Product not found");
+  }
 
   const wishlistData = {
     userId: new Types.ObjectId(userId),
