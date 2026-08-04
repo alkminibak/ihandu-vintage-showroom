@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { getProductById } from "../services/products.service";
 import type { Product } from "../types/Product";
+import { useWishlist } from "../hooks/useWishlist";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -12,6 +13,10 @@ const ProductDetailsPage = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+
+  const isWishlisted = product ? isInWishlist(product.id) : false;
 
   useEffect(() => {
     if (!id) {
@@ -109,9 +114,16 @@ const ProductDetailsPage = () => {
 
             <button
               type="button"
+              onClick={async () => {
+                if (isWishlisted) {
+                  await removeFromWishlist(product.id);
+                } else {
+                  await addToWishlist(product.id);
+                }
+              }}
               className="mt-10 border border-accent bg-accent-light px-8 py-3 text-sm text-text transition-colors hover:bg-accent"
             >
-              Add to wishlist
+              {isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
             </button>
           </div>
         </section>
