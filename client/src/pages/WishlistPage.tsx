@@ -1,11 +1,17 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
-import { mockProducts } from "../data/mockProducts";
 import EmptyWishlist from "../components/EmptyWishlist";
+import { useWishlist } from "../hooks/useWishlist";
 
 const WishlistPage = () => {
-  const wishlistProducts = mockProducts.slice(0, 0); // mock data
+  const { wishlist, loading } = useWishlist();
+
+  const wishlistProducts = wishlist.map((item) => item.product);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -17,9 +23,7 @@ const WishlistPage = () => {
             Saved pieces ({wishlistProducts.length})
           </p>
 
-          <h1 className="mt-4 text-3xl font-light text-text">
-            My Wishlist
-          </h1>
+          <h1 className="mt-4 text-3xl font-light text-text">My Wishlist</h1>
 
           {!wishlistProducts.length ? (
             <EmptyWishlist />
