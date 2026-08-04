@@ -30,11 +30,7 @@ const WishlistPage = () => {
           ) : (
             <div className="mt-12 grid grid-cols-4 gap-x-8 gap-y-12">
               {wishlistProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  showWishlistButton={false}
-                />
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
           )}
