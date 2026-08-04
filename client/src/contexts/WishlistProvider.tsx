@@ -3,7 +3,11 @@ import { useEffect, useState, type ReactNode } from "react";
 import { WishlistContext } from "./WishlistContext";
 import type { WishlistItem } from "../types/Wishlist";
 
-import { getWishlist } from "../services/wishlist.service";
+import {
+  getWishlist,
+  addToWishlist as addToWishlistRequest,
+  removeFromWishlist as removeFromWishlistRequest,
+} from "../services/wishlist.service";
 
 interface WishlistProviderProps {
   children: ReactNode;
@@ -32,6 +36,22 @@ export default function WishlistProvider({ children }: WishlistProviderProps) {
     }
   };
 
+  const addToWishlist = async (productId: string) => {
+    await addToWishlistRequest(productId);
+
+    await refreshWishlist();
+  };
+
+  const removeFromWishlist = async (productId: string) => {
+    await removeFromWishlistRequest(productId);
+
+    await refreshWishlist();
+  };
+
+  const isInWishlist = (productId: string) => {
+    return wishlist.some((item) => item.product.id === productId);
+  };
+
   useEffect(() => {
     refreshWishlist();
   }, []);
@@ -42,9 +62,9 @@ export default function WishlistProvider({ children }: WishlistProviderProps) {
         wishlist,
         loading,
         refreshWishlist,
-        addToWishlist: async () => {},
-        removeFromWishlist: async () => {},
-        isInWishlist: () => false,
+        addToWishlist,
+        removeFromWishlist,
+        isInWishlist,
       }}
     >
       {children}
