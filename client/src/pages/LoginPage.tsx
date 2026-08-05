@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -15,6 +15,12 @@ import { login, register } from "../services/auth.service";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const requestedPath =
+    (location.state as { from?: string } | null)?.from ?? "/";
+
   const {
     register: registerLogin,
     handleSubmit,
@@ -40,7 +46,7 @@ const LoginPage = () => {
       localStorage.setItem("token", authResponse.token);
       localStorage.setItem("user", JSON.stringify(authResponse.user));
 
-      navigate("/");
+      navigate(requestedPath, { replace: true });
     } catch (error: unknown) {
       setError("root", {
         message: error instanceof Error ? error.message : "Failed to login",
@@ -55,7 +61,7 @@ const LoginPage = () => {
       localStorage.setItem("token", registerResponse.token);
       localStorage.setItem("user", JSON.stringify(registerResponse.user));
 
-      navigate("/");
+      navigate(requestedPath, { replace: true });
     } catch (error: unknown) {
       if (error instanceof Error) {
         setRegisterError("root", {
