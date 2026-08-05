@@ -5,12 +5,45 @@ import EmptyWishlist from "../components/EmptyWishlist";
 import { useWishlist } from "../hooks/useWishlist";
 
 const WishlistPage = () => {
+  const token = localStorage.getItem("token");
   const { wishlist, loading } = useWishlist();
 
   const wishlistProducts = wishlist.map((item) => item.product);
 
+  if (!token) {
+    return (
+      <>
+        <Header />
+
+        <main className="mx-auto min-h-[60vh] max-w-6xl px-16 py-14">
+          <section>
+            <p className="text-xs uppercase tracking-widest text-text-muted">
+              Saved pieces
+            </p>
+
+            <h1 className="mt-4 text-3xl font-light text-text">My Wishlist</h1>
+
+            <EmptyWishlist isGuest />
+          </section>
+        </main>
+
+        <Footer />
+      </>
+    );
+  }
+
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <>
+        <Header />
+
+        <main className="mx-auto min-h-[60vh] max-w-6xl px-16 py-14">
+          <p className="text-sm text-text-muted">Loading wishlist...</p>
+        </main>
+
+        <Footer />
+      </>
+    );
   }
 
   return (
