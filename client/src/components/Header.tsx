@@ -46,7 +46,7 @@ const Header = () => {
               }`
             }
           >
-            Login
+            Register / Login
           </NavLink>
         )}
 

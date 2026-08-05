@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -14,9 +14,7 @@ import Header from "../components/Header";
 import { login, register } from "../services/auth.service";
 
 const LoginPage = () => {
-  const [registrationSuccess, setRegistrationSuccess] = useState<string | null>(
-    null,
-  );
+  const navigate = useNavigate();
   const {
     register: registerLogin,
     handleSubmit,
@@ -30,7 +28,6 @@ const LoginPage = () => {
     register: registerRegister,
     handleSubmit: handleRegisterSubmit,
     setError: setRegisterError,
-    reset: resetRegisterForm,
     formState: { errors: registerErrors, isSubmitting: isRegistering },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -43,7 +40,7 @@ const LoginPage = () => {
       localStorage.setItem("token", authResponse.token);
       localStorage.setItem("user", JSON.stringify(authResponse.user));
 
-      console.log(authResponse);
+      navigate("/");
     } catch (error: unknown) {
       setError("root", {
         message: error instanceof Error ? error.message : "Failed to login",
@@ -52,13 +49,13 @@ const LoginPage = () => {
   };
 
   const handleRegistrationSubmit = async (data: RegisterFormData) => {
-    setRegistrationSuccess(null);
-
     try {
       const registerResponse = await register(data);
 
-      setRegistrationSuccess(registerResponse.message);
-      resetRegisterForm();
+      localStorage.setItem("token", registerResponse.token);
+      localStorage.setItem("user", JSON.stringify(registerResponse.user));
+
+      navigate("/");
     } catch (error: unknown) {
       if (error instanceof Error) {
         setRegisterError("root", {
@@ -250,9 +247,6 @@ const LoginPage = () => {
               >
                 {isRegistering ? "Creating account..." : "Create account"}
               </button>
-              {registrationSuccess && (
-                <p className="text-sm text-success">{registrationSuccess}</p>
-              )}
               {registerErrors.root && (
                 <p className="text-sm text-error">
                   {registerErrors.root.message}

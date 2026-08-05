@@ -15,8 +15,26 @@ export const registerUser: RequestHandler = async (request, response, next) => {
       password,
     });
 
+    const jwtSecret = process.env.JWT_SECRET;
+
+    if (!jwtSecret) {
+      throw new Error("JWT_SECRET is not defined");
+    }
+
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        role: user.role,
+      },
+      jwtSecret,
+      {
+        expiresIn: "7d",
+      },
+    );
+
     response.status(201).json({
       message: "User registered successfully",
+      token,
       user: {
         id: user.id,
         firstName: user.firstName,
