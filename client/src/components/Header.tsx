@@ -1,8 +1,10 @@
 import { useState } from "react";
 import type { AuthUser } from "../types/Auth";
-import { NavLink, Link } from "react-router";
+import { NavLink, Link, useNavigate } from "react-router";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState<AuthUser | null>(() => {
     const storedUser = localStorage.getItem("user");
 
@@ -14,6 +16,7 @@ const Header = () => {
     localStorage.removeItem("user");
 
     setUser(null);
+    navigate("/");
   };
 
   return (
