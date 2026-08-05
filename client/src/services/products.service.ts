@@ -29,7 +29,12 @@ export async function getProductById(id: string): Promise<Product> {
   return product;
 }
 
-export type CreateProductData = Omit<Product, "id" | "createdAt">;
+export type CreateProductData = Omit<Product, "id" | "createdAt" | "updatedAt">;
+
+export interface ApiError {
+  message: string;
+  errors?: string[];
+}
 
 export async function createProduct(
   productData: CreateProductData,
@@ -41,7 +46,9 @@ export async function createProduct(
   });
 
   if (!response.ok) {
-    throw new Error("Failed to create product");
+    const error = (await response.json()) as ApiError;
+
+    throw error;
   }
 
   const newProduct = (await response.json()) as Product;
@@ -71,7 +78,9 @@ export async function updateProduct(
   });
 
   if (!response.ok) {
-    throw new Error("Failed to update product");
+    const error = (await response.json()) as ApiError;
+
+    throw error;
   }
 
   const updatedProduct: Product = await response.json();

@@ -4,6 +4,7 @@ import {
   createProduct,
   updateProduct,
   type CreateProductData,
+  type ApiError,
 } from "../services/products.service";
 
 interface ProductFormData {
@@ -37,6 +38,8 @@ const ProductForm = ({
 }: ProductFormProps) => {
   const [formData, setFormData] = useState(initialFormData);
 
+  const [errors, setErrors] = useState<string[]>([]);
+
   useEffect(() => {
     if (editingProduct) {
       // Populate the form when a product is selected for editing
@@ -55,6 +58,8 @@ const ProductForm = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.currentTarget;
+
+    setErrors([]);
 
     setFormData((previousFormData) => ({
       ...previousFormData,
@@ -78,20 +83,27 @@ const ProductForm = ({
       imageUrl: formData.imageUrl,
     };
 
-    if (editingProduct) {
-      const updatedProduct = await updateProduct(
-        editingProduct.id,
-        productData,
-      );
+    try {
+      if (editingProduct) {
+        const updatedProduct = await updateProduct(
+          editingProduct.id,
+          productData,
+        );
 
-      onUpdateProduct(updatedProduct);
-    } else {
-      const newProduct = await createProduct(productData);
+        onUpdateProduct(updatedProduct);
+      } else {
+        const newProduct = await createProduct(productData);
 
-      onAddProduct(newProduct);
+        onAddProduct(newProduct);
+      }
+
+      setFormData(initialFormData);
+      setErrors([]);
+    } catch (error) {
+      const apiError = error as ApiError;
+
+      setErrors(apiError.errors ?? [apiError.message]);
     }
-
-    setFormData(initialFormData);
   };
 
   return (
@@ -101,6 +113,15 @@ const ProductForm = ({
       </h2>
 
       <form onSubmit={handleSubmit} className="mt-8">
+        {errors.length > 0 && (
+          <div className="mb-6 rounded-md border border-error/40 bg-error/10 p-4">
+            <ul className="list-inside list-disc space-y-1 text-sm text-error">
+              {errors.map((error) => (
+                <li key={error}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className="space-y-6">
           <div>
             <label
