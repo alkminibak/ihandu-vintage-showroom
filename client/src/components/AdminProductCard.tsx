@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { useState } from "react";
 import type { Product } from "../types/Product";
 
@@ -18,17 +19,23 @@ const AdminProductCard = ({
 
   return (
     <article className="overflow-hidden rounded-lg border border-accent bg-white">
-      <img
-        src={imageSrc}
-        alt={product.title}
-        onError={() => setImageSrc(PLACEHOLDER_IMAGE)}
-        className="w-full object-cover"
-      />
+      <Link to={`/products/${product.id}`}>
+        <img
+          src={imageSrc}
+          alt={product.title}
+          onError={() => setImageSrc(PLACEHOLDER_IMAGE)}
+          className="w-full object-cover transition-opacity hover:opacity-90"
+        />
+      </Link>
 
       <div className="p-5">
         <p className="text-sm text-text-muted">{product.category}</p>
 
-        <h3 className="mt-1 text-lg font-medium text-text">{product.title}</h3>
+        <Link to={`/products/${product.id}`}>
+          <h3 className="mt-1 text-lg font-medium text-text transition-colors hover:text-accent">
+            {product.title}
+          </h3>
+        </Link>
 
         <p className="mt-2 text-sm text-text">€{product.price}</p>
 
