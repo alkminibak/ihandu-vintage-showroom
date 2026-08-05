@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -13,6 +14,9 @@ import Header from "../components/Header";
 import { login, register } from "../services/auth.service";
 
 const LoginPage = () => {
+  const [registrationSuccess, setRegistrationSuccess] = useState<string | null>(
+    null,
+  );
   const {
     register: registerLogin,
     handleSubmit,
@@ -26,6 +30,7 @@ const LoginPage = () => {
     register: registerRegister,
     handleSubmit: handleRegisterSubmit,
     setError: setRegisterError,
+    reset: resetRegisterForm,
     formState: { errors: registerErrors, isSubmitting: isRegistering },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -47,15 +52,17 @@ const LoginPage = () => {
   };
 
   const handleRegistrationSubmit = async (data: RegisterFormData) => {
+    setRegistrationSuccess(null);
+
     try {
       const registerResponse = await register(data);
 
-      console.log(registerResponse);
+      setRegistrationSuccess(registerResponse.message);
+      resetRegisterForm();
     } catch (error: unknown) {
       if (error instanceof Error) {
         setRegisterError("root", {
-          message:
-            error instanceof Error ? error.message : "Failed to register user",
+          message: error.message,
         });
       }
     }
@@ -243,6 +250,9 @@ const LoginPage = () => {
               >
                 {isRegistering ? "Creating account..." : "Create account"}
               </button>
+              {registrationSuccess && (
+                <p className="text-sm text-success">{registrationSuccess}</p>
+              )}
               {registerErrors.root && (
                 <p className="text-sm text-error">
                   {registerErrors.root.message}
