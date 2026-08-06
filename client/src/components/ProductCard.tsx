@@ -15,6 +15,9 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
+  const token = localStorage.getItem("token");
+  const isGuest = !token;
+
   const isWishlisted = isInWishlist(product.id);
   return (
     <article>
@@ -36,8 +39,22 @@ const ProductCard = ({
         {showWishlistButton && (
           <button
             type="button"
-            aria-label={`${isWishlisted ? "Remove" : "Add"} ${product.title} ${isWishlisted ? "from" : "to"} wishlist`}
-            className="text-2xl leading-none text-accent transition-colors hover:text-text"
+            disabled={isGuest}
+            title={
+              isGuest ? "Register or log in to use the wishlist" : undefined
+            }
+            aria-label={
+              isGuest
+                ? "Register or log in to use the wishlist"
+                : `${isWishlisted ? "Remove" : "Add"} ${product.title} ${
+                    isWishlisted ? "from" : "to"
+                  } wishlist`
+            }
+            className={`text-2xl leading-none transition-colors ${
+              isGuest
+                ? "cursor-default text-text-muted opacity-50"
+                : "text-accent hover:text-text"
+            }`}
             onClick={async (event) => {
               event.preventDefault();
 

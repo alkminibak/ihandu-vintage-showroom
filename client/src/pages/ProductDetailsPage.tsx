@@ -18,6 +18,9 @@ const ProductDetailsPage = () => {
 
   const isWishlisted = product ? isInWishlist(product.id) : false;
 
+  const token = localStorage.getItem("token");
+  const isGuest = !token;
+
   useEffect(() => {
     if (!id) {
       setError(true);
@@ -114,6 +117,10 @@ const ProductDetailsPage = () => {
 
             <button
               type="button"
+              disabled={isGuest}
+              title={
+                isGuest ? "Register or log in to use the wishlist" : undefined
+              }
               onClick={async () => {
                 if (isWishlisted) {
                   await removeFromWishlist(product.id);
@@ -121,9 +128,17 @@ const ProductDetailsPage = () => {
                   await addToWishlist(product.id);
                 }
               }}
-              className="mt-10 border border-accent bg-accent-light px-8 py-3 text-sm text-text transition-colors hover:bg-accent"
+              className={`mt-10 border px-8 py-3 text-sm transition-colors ${
+                isGuest
+                  ? "cursor-not-allowed border-text-muted bg-background text-text-muted opacity-50"
+                  : "border-accent bg-accent-light text-text hover:bg-accent"
+              }`}
             >
-              {isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+              {isGuest
+                ? "Register / Login to use wishlist"
+                : isWishlisted
+                  ? "Remove from wishlist"
+                  : "Add to wishlist"}
             </button>
           </div>
         </section>
