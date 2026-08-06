@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import ProductForm from "../components/ProductForm";
 import AdminProductCard from "../components/AdminProductCard";
@@ -71,8 +72,16 @@ const AdminDashboardPage = () => {
       </div>
 
       <section className="mt-16">
-        <h2 className="text-2xl font-light text-text">Products</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-light text-text">Products</h2>
 
+          <Link
+            to="/"
+            className="border-b border-accent pb-1 text-sm text-text transition-colors hover:text-accent"
+          >
+            Back to collection
+          </Link>
+        </div>
         <div className="mt-8 grid grid-cols-3 gap-6">
           {products.map((product) => (
             <AdminProductCard
