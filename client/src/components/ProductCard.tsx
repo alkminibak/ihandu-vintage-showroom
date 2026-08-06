@@ -23,8 +23,12 @@ const ProductCard = ({
     <article>
       <Link to={`/products/${product.id}`}>
         <img
-          src={product.imageUrl}
+          src={product.imageUrl || "/image-placeholder.png"}
           alt={product.title}
+          onError={(event) => {
+            event.currentTarget.onerror = null;
+            event.currentTarget.src = "/image-placeholder.png";
+          }}
           className="block h-auto w-full transition-opacity hover:opacity-90"
         />
 

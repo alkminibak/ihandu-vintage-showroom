@@ -96,8 +96,12 @@ const ProductDetailsPage = () => {
         <section className="mt-10 grid grid-cols-2 gap-16">
           <div>
             <img
-              src={product.imageUrl}
+              src={product.imageUrl || "/image-placeholder.png"}
               alt={product.title}
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = "/image-placeholder.png";
+              }}
               className="block w-full"
             />
           </div>
