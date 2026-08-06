@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import type { Product } from "../types/Product";
 
 import { useWishlist } from "../hooks/useWishlist";
+import { useAuth } from "../hooks/useAuth";
 
 interface ProductCardProps {
   product: Product;
@@ -14,11 +15,10 @@ const ProductCard = ({
   showWishlistButton = true,
 }: ProductCardProps) => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { isAuthenticated } = useAuth();
 
-  const token = localStorage.getItem("token");
-  const isGuest = !token;
-
-  const isWishlisted = isInWishlist(product.id);
+  const isGuest = !isAuthenticated;
+  const isWishlisted = isAuthenticated && isInWishlist(product.id);
   return (
     <article>
       <Link to={`/products/${product.id}`}>

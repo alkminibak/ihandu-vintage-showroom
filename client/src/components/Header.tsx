@@ -1,21 +1,12 @@
-import { useState } from "react";
-import type { AuthUser } from "../types/Auth";
 import { NavLink, Link, useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 
 const Header = () => {
   const navigate = useNavigate();
-
-  const [user, setUser] = useState<AuthUser | null>(() => {
-    const storedUser = localStorage.getItem("user");
-
-    return storedUser ? (JSON.parse(storedUser) as AuthUser) : null;
-  });
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    setUser(null);
+    logout();
     navigate("/");
   };
 

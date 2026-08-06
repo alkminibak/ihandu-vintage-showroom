@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import { getProductById } from "../services/products.service";
 import type { Product } from "../types/Product";
 import { useWishlist } from "../hooks/useWishlist";
+import { useAuth } from "../hooks/useAuth";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -15,11 +16,12 @@ const ProductDetailsPage = () => {
   const [error, setError] = useState(false);
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { isAuthenticated } = useAuth();
 
-  const isWishlisted = product ? isInWishlist(product.id) : false;
+  const isWishlisted =
+    isAuthenticated && product ? isInWishlist(product.id) : false;
 
-  const token = localStorage.getItem("token");
-  const isGuest = !token;
+  const isGuest = !isAuthenticated;
 
   useEffect(() => {
     if (!id) {
@@ -130,7 +132,7 @@ const ProductDetailsPage = () => {
               }}
               className={`mt-10 border px-8 py-3 text-sm transition-colors ${
                 isGuest
-                  ? "cursor-not-allowed border-text-muted bg-background text-text-muted opacity-50"
+                  ? "cursor-default border-text-muted bg-background text-text-muted opacity-50"
                   : "border-accent bg-accent-light text-text hover:bg-accent"
               }`}
             >

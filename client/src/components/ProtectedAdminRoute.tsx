@@ -1,18 +1,16 @@
 import { Navigate } from "react-router";
-import type { AuthUser } from "../types/Auth";
+import { useAuth } from "../hooks/useAuth";
 
 interface ProtectedAdminRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedAdminRoute = ({ children }: ProtectedAdminRouteProps) => {
-  const storedUser = localStorage.getItem("user");
+  const { user } = useAuth();
 
-  if (!storedUser) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
-
-  const user = JSON.parse(storedUser) as AuthUser;
 
   if (user.role !== "admin") {
     return <Navigate to="/" replace />;

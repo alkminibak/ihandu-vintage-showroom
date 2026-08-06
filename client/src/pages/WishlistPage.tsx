@@ -3,14 +3,15 @@ import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
 import EmptyWishlist from "../components/EmptyWishlist";
 import { useWishlist } from "../hooks/useWishlist";
+import { useAuth } from "../hooks/useAuth";
 
 const WishlistPage = () => {
-  const token = localStorage.getItem("token");
+  const { isAuthenticated } = useAuth();
   const { wishlist, loading } = useWishlist();
 
   const wishlistProducts = wishlist.map((item) => item.product);
 
-  if (!token) {
+  if (!isAuthenticated) {
     return (
       <>
         <Header />

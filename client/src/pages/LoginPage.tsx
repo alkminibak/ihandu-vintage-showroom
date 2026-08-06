@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -15,6 +16,8 @@ import { login, register } from "../services/auth.service";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+
+  const { authenticate } = useAuth();
 
   const location = useLocation();
 
@@ -43,8 +46,7 @@ const LoginPage = () => {
     try {
       const authResponse = await login(data);
 
-      localStorage.setItem("token", authResponse.token);
-      localStorage.setItem("user", JSON.stringify(authResponse.user));
+      authenticate(authResponse.token, authResponse.user);
 
       navigate(requestedPath, { replace: true });
     } catch (error: unknown) {
@@ -58,8 +60,7 @@ const LoginPage = () => {
     try {
       const registerResponse = await register(data);
 
-      localStorage.setItem("token", registerResponse.token);
-      localStorage.setItem("user", JSON.stringify(registerResponse.user));
+      authenticate(registerResponse.token, registerResponse.user);
 
       navigate(requestedPath, { replace: true });
     } catch (error: unknown) {
