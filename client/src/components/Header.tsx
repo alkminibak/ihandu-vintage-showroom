@@ -23,6 +23,19 @@ const Header = () => {
       </Link>
 
       <nav className="flex items-center gap-5 text-sm">
+        {user?.role === "admin" && (
+          <NavLink
+            to="/admin"
+            className={({ isActive }) =>
+              `transition-colors hover:text-accent ${
+                isActive ? "text-accent" : ""
+              }`
+            }
+          >
+            Admin Dashboard
+          </NavLink>
+        )}
+
         {user ? (
           <button
             type="button"
