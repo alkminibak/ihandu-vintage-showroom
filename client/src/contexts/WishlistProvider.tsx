@@ -15,7 +15,9 @@ interface WishlistProviderProps {
 
 export default function WishlistProvider({ children }: WishlistProviderProps) {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(() =>
+    Boolean(localStorage.getItem("token")),
+  );
 
   const refreshWishlist = async () => {
     const token = localStorage.getItem("token");
@@ -53,7 +55,33 @@ export default function WishlistProvider({ children }: WishlistProviderProps) {
   };
 
   useEffect(() => {
-    refreshWishlist();
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return;
+    }
+
+    let cancelled = false;
+
+    const loadWishlist = async () => {
+      try {
+        const wishlist = await getWishlist();
+
+        if (!cancelled) {
+          setWishlist(wishlist);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void loadWishlist();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (

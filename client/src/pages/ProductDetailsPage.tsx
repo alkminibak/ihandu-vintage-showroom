@@ -12,7 +12,7 @@ const ProductDetailsPage = () => {
   const { id } = useParams();
 
   const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(Boolean(id));
   const [error, setError] = useState(false);
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -25,8 +25,6 @@ const ProductDetailsPage = () => {
 
   useEffect(() => {
     if (!id) {
-      setError(true);
-      setLoading(false);
       return;
     }
 
