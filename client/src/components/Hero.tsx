@@ -2,7 +2,7 @@ import heroImage from "../assets/images/hero2.jpg";
 
 const Hero = () => {
   return (
-    <section className="relative h-40 overflow-hidden sm:h-auto sm:max-h-[520px]">
+    <section className="relative h-40 overflow-hidden sm:h-auto">
       <img
         src={heroImage}
         alt="Three vintage outfits from the I Hand U collection"
