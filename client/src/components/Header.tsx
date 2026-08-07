@@ -11,7 +11,7 @@ const Header = () => {
   };
 
   return (
-    <header className="mx-auto flex max-w-7xl flex-col items-center gap-5 px-4 py-5 md:px-6 md:py-6 lg:flex-row lg:justify-between">
+    <header className="mx-auto flex w-full max-w-7xl flex-col items-center gap-5 px-4 py-5 md:px-6 md:py-6 lg:flex-row lg:justify-between">
       <Link
         to="/"
         className="text-center transition-colors hover:text-accent lg:text-left"
