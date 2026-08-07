@@ -32,13 +32,13 @@ const ProductCard = ({
           className="block h-auto w-full transition-opacity hover:opacity-90"
         />
 
-        <h2 className="mt-4 text-lg font-medium text-text transition-colors hover:text-accent">
+        <h2 className="mt-3 text-base font-medium text-text transition-colors hover:text-accent md:mt-4 md:text-lg">
           {product.title}
         </h2>
       </Link>
 
       <div className="mt-2 flex items-center justify-between">
-        <p className="text-text-muted">€{product.price}</p>
+        <p className="text-sm text-text-muted md:text-base">€{product.price}</p>
 
         {showWishlistButton && (
           <button
@@ -54,7 +54,7 @@ const ProductCard = ({
                     isWishlisted ? "from" : "to"
                   } wishlist`
             }
-            className={`text-2xl leading-none transition-colors ${
+            className={`text-xl leading-none transition-colors md:text-2xl ${
               isGuest
                 ? "cursor-default text-text-muted opacity-50"
                 : "text-accent hover:text-text"
