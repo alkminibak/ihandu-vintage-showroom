@@ -71,22 +71,25 @@ const LoginPage = () => {
       }
     }
   };
+
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header />
 
-      <main className="mx-auto max-w-6xl px-16 py-16">
-        <div className="grid grid-cols-2 gap-20">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10 md:px-8 md:py-12 lg:px-16 lg:py-16">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-2 md:gap-10 lg:gap-20">
           <section>
             <p className="text-xs uppercase tracking-widest text-text-muted">
               Welcome back!
             </p>
 
-            <h1 className="mt-4 text-2xl font-light text-text">Login</h1>
+            <h1 className="mt-4 text-xl font-light text-text md:text-2xl">
+              Login
+            </h1>
 
             <form
               onSubmit={handleSubmit(handleLoginSubmit)}
-              className="mt-10 max-w-md space-y-6"
+              className="mt-8 max-w-md space-y-6 md:mt-10"
             >
               <div>
                 <label
@@ -103,6 +106,7 @@ const LoginPage = () => {
                   {...registerLogin("email")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+
                 {errors.email && (
                   <p className="mt-1 text-sm text-error">
                     {errors.email.message}
@@ -125,6 +129,7 @@ const LoginPage = () => {
                   {...registerLogin("password")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+
                 {errors.password && (
                   <p className="mt-1 text-sm text-error">
                     {errors.password.message}
@@ -135,7 +140,7 @@ const LoginPage = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="border border-accent bg-accent-light px-8 py-2.5 text-sm text-text transition-colors hover:bg-accent"
+                className="w-full border border-accent bg-accent-light px-8 py-2.5 text-sm text-text transition-colors hover:bg-accent md:w-auto"
               >
                 {isSubmitting ? "Logging in..." : "Login"}
               </button>
@@ -151,13 +156,13 @@ const LoginPage = () => {
               New to I Hand U?
             </p>
 
-            <h2 className="mt-4 text-2xl font-light text-text">
+            <h2 className="mt-4 text-xl font-light text-text md:text-2xl">
               Create an account
             </h2>
 
             <form
               onSubmit={handleRegisterSubmit(handleRegistrationSubmit)}
-              className="mt-10 max-w-md space-y-6"
+              className="mt-8 max-w-md space-y-6 md:mt-10"
             >
               <div>
                 <label
@@ -174,6 +179,7 @@ const LoginPage = () => {
                   {...registerRegister("firstName")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+
                 {registerErrors.firstName && (
                   <p className="mt-1 text-sm text-error">
                     {registerErrors.firstName.message}
@@ -196,6 +202,7 @@ const LoginPage = () => {
                   {...registerRegister("lastName")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+
                 {registerErrors.lastName && (
                   <p className="mt-1 text-sm text-error">
                     {registerErrors.lastName.message}
@@ -218,6 +225,7 @@ const LoginPage = () => {
                   {...registerRegister("email")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+
                 {registerErrors.email && (
                   <p className="mt-1 text-sm text-error">
                     {registerErrors.email.message}
@@ -240,6 +248,7 @@ const LoginPage = () => {
                   {...registerRegister("password")}
                   className="mt-2 w-full border border-accent bg-background px-4 py-2.5 text-text outline-none transition-colors focus:border-text"
                 />
+
                 {registerErrors.password && (
                   <p className="mt-1 text-sm text-error">
                     {registerErrors.password.message}
@@ -250,10 +259,11 @@ const LoginPage = () => {
               <button
                 type="submit"
                 disabled={isRegistering}
-                className="border border-accent bg-accent-light px-8 py-2.5 text-sm text-text transition-colors hover:bg-accent"
+                className="w-full border border-accent bg-accent-light px-8 py-2.5 text-sm text-text transition-colors hover:bg-accent md:w-auto"
               >
                 {isRegistering ? "Creating account..." : "Create account"}
               </button>
+
               {registerErrors.root && (
                 <p className="text-sm text-error">
                   {registerErrors.root.message}
@@ -265,7 +275,7 @@ const LoginPage = () => {
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 };
 
