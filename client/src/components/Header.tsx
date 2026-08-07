@@ -11,18 +11,21 @@ const Header = () => {
   };
 
   return (
-    <header className="mx-auto flex max-w-7xl items-center justify-between p-6">
-      <Link to="/" className="transition-colors hover:text-accent">
+    <header className="mx-auto flex max-w-7xl flex-col items-center gap-5 px-4 py-5 md:px-6 md:py-6 lg:flex-row lg:justify-between">
+      <Link
+        to="/"
+        className="text-center transition-colors hover:text-accent lg:text-left"
+      >
         <div>
-          <h1 className="text-5xl font-light">I Hand U</h1>
+          <h1 className="text-4xl font-light md:text-5xl">I Hand U</h1>
 
-          <p className="mt-1 text-sm tracking-wide text-text-muted">
+          <p className="mt-1 text-xs tracking-wide text-text-muted md:text-sm">
             Curated Vintage Collection
           </p>
         </div>
       </Link>
 
-      <nav className="flex items-center gap-5 text-sm">
+      <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs md:gap-x-5 md:text-sm lg:justify-end">
         {user?.role === "admin" && (
           <NavLink
             to="/admin"
@@ -57,7 +60,10 @@ const Header = () => {
           </NavLink>
         )}
 
-        <span aria-hidden="true" className="h-5 w-px bg-accent-light" />
+        <span
+          aria-hidden="true"
+          className="hidden h-5 w-px bg-accent-light lg:block"
+        />
 
         <NavLink
           to="/wishlist"
