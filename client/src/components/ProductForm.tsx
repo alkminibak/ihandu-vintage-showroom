@@ -107,12 +107,12 @@ const ProductForm = ({
   };
 
   return (
-    <section className="max-w-3xl rounded-lg border border-accent bg-accent-light p-8">
-      <h2 className="text-2xl font-light text-text">
+    <section className="w-full max-w-3xl rounded-lg border border-accent bg-accent-light p-5 sm:p-6 md:p-8">
+      <h2 className="text-xl font-light text-text md:text-2xl">
         {editingProduct ? "Edit Product" : "Add New Product"}
       </h2>
 
-      <form onSubmit={handleSubmit} className="mt-8">
+      <form onSubmit={handleSubmit} className="mt-6 md:mt-8">
         {errors.length > 0 && (
           <div className="mb-6 rounded-md border border-error/40 bg-error/10 p-4">
             <ul className="list-inside list-disc space-y-1 text-sm text-error">
@@ -122,6 +122,7 @@ const ProductForm = ({
             </ul>
           </div>
         )}
+
         <div className="space-y-6">
           <div>
             <label
@@ -142,7 +143,7 @@ const ProductForm = ({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label
                 htmlFor="price"
@@ -224,12 +225,12 @@ const ProductForm = ({
             />
           </div>
 
-          <div className="flex justify-end gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
             {editingProduct && (
               <button
                 type="button"
                 onClick={handleCancel}
-                className="rounded-md border border-text-muted px-6 py-2.5 text-text transition-colors duration-300 hover:bg-text-muted/20"
+                className="w-full rounded-md border border-text-muted px-6 py-2.5 text-text transition-colors duration-300 hover:bg-text-muted/20 sm:w-auto"
               >
                 Cancel
               </button>
@@ -237,7 +238,7 @@ const ProductForm = ({
 
             <button
               type="submit"
-              className="rounded-md border border-accent bg-accent px-6 py-2.5 text-text transition-colors duration-300 hover:bg-accent-light"
+              className="w-full rounded-md border border-accent bg-accent px-6 py-2.5 text-text transition-colors duration-300 hover:bg-accent-light sm:w-auto"
             >
               {editingProduct ? "Save Changes" : "Add Product"}
             </button>
