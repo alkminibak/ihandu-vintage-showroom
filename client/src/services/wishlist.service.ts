@@ -1,15 +1,6 @@
-import { API_URL } from "../config/api";
+import { API_URL, getAuthHeaders } from "../config/api";
 
 import type { WishlistItem } from "../types/Wishlist";
-
-function getAuthHeaders() {
-  const token = localStorage.getItem("token");
-
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-}
 
 export async function getWishlist(): Promise<WishlistItem[]> {
   const response = await fetch(`${API_URL}/wishlist`, {

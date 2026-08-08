@@ -1,15 +1,6 @@
-import { API_URL } from "../config/api";
+import { API_URL, getAuthHeaders } from "../config/api";
 
 import type { Product } from "../types/Product";
-
-function getAuthHeaders() {
-  const token = localStorage.getItem("token");
-
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-}
 
 export async function getProducts(): Promise<Product[]> {
   const response = await fetch(`${API_URL}/products`);
