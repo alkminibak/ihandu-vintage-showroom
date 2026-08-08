@@ -16,7 +16,7 @@ export const getProductById = async (request: Request, response: Response) => {
 };
 
 export const getProducts = async (_request: Request, response: Response) => {
-  const products = await ProductModel.find();
+  const products = await ProductModel.find().sort({ createdAt: -1 });
 
   response.json(products.map(toProductResponse));
 };
