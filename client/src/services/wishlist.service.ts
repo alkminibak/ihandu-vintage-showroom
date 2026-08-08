@@ -1,3 +1,5 @@
+import { API_URL } from "../config/api";
+
 import type { WishlistItem } from "../types/Wishlist";
 
 function getAuthHeaders() {
@@ -10,7 +12,7 @@ function getAuthHeaders() {
 }
 
 export async function getWishlist(): Promise<WishlistItem[]> {
-  const response = await fetch("http://localhost:3000/wishlist", {
+  const response = await fetch(`${API_URL}/wishlist`, {
     headers: getAuthHeaders(),
   });
 
@@ -24,7 +26,7 @@ export async function getWishlist(): Promise<WishlistItem[]> {
 }
 
 export async function addToWishlist(productId: string): Promise<WishlistItem> {
-  const response = await fetch(`http://localhost:3000/wishlist/${productId}`, {
+  const response = await fetch(`${API_URL}/wishlist/${productId}`, {
     method: "POST",
     headers: getAuthHeaders(),
   });
@@ -39,7 +41,7 @@ export async function addToWishlist(productId: string): Promise<WishlistItem> {
 }
 
 export async function removeFromWishlist(productId: string): Promise<void> {
-  const response = await fetch(`http://localhost:3000/wishlist/${productId}`, {
+  const response = await fetch(`${API_URL}/wishlist/${productId}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });

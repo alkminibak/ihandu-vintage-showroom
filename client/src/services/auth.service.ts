@@ -1,3 +1,5 @@
+import { API_URL } from "../config/api";
+
 import type {
   AuthResponse,
   LoginData,
@@ -6,7 +8,7 @@ import type {
 } from "../types/Auth";
 
 export async function login(loginData: LoginData): Promise<AuthResponse> {
-  const response = await fetch("http://localhost:3000/users/login", {
+  const response = await fetch(`${API_URL}/users/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -30,7 +32,7 @@ export async function login(loginData: LoginData): Promise<AuthResponse> {
 export async function register(
   registerData: RegisterData,
 ): Promise<RegisterResponse> {
-  const response = await fetch("http://localhost:3000/users/register", {
+  const response = await fetch(`${API_URL}/users/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

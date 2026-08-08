@@ -1,3 +1,5 @@
+import { API_URL } from "../config/api";
+
 import type { Product } from "../types/Product";
 
 function getAuthHeaders() {
@@ -10,7 +12,7 @@ function getAuthHeaders() {
 }
 
 export async function getProducts(): Promise<Product[]> {
-  const response = await fetch("http://localhost:3000/products");
+  const response = await fetch(`${API_URL}/products`);
 
   const products = (await response.json()) as Product[];
 
@@ -18,7 +20,7 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProductById(id: string): Promise<Product> {
-  const response = await fetch(`http://localhost:3000/products/${id}`);
+  const response = await fetch(`${API_URL}/products/${id}`);
 
   if (!response.ok) {
     throw new Error("Product not found");
@@ -39,7 +41,7 @@ export interface ApiError {
 export async function createProduct(
   productData: CreateProductData,
 ): Promise<Product> {
-  const response = await fetch("http://localhost:3000/products", {
+  const response = await fetch(`${API_URL}/products`, {
     method: "POST",
     headers: getAuthHeaders(),
     body: JSON.stringify(productData),
@@ -57,7 +59,7 @@ export async function createProduct(
 }
 
 export async function deleteProduct(id: string): Promise<void> {
-  const response = await fetch(`http://localhost:3000/products/${id}`, {
+  const response = await fetch(`${API_URL}/products/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
@@ -71,7 +73,7 @@ export async function updateProduct(
   id: string,
   productData: CreateProductData,
 ): Promise<Product> {
-  const response = await fetch(`http://localhost:3000/products/${id}`, {
+  const response = await fetch(`${API_URL}/products/${id}`, {
     method: "PUT",
     headers: getAuthHeaders(),
     body: JSON.stringify(productData),
