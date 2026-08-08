@@ -1,6 +1,7 @@
 import { toProductResponse } from "../mappers/product.mapper.js";
 import type { Request, Response } from "express";
 import { ProductModel } from "../models/Product.js";
+import { WishlistModel } from "../models/Wishlist.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 
 export const getProductById = async (request: Request, response: Response) => {
@@ -35,6 +36,8 @@ export const deleteProduct = async (request: Request, response: Response) => {
   if (!deletedProduct) {
     throw new NotFoundError("Product not found");
   }
+
+  await WishlistModel.deleteMany({ productId: id });
 
   response.status(204).send();
 };
