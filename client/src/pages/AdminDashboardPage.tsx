@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 
 import ProductForm from "../components/ProductForm";
@@ -7,21 +7,52 @@ import type { Product } from "../types/Product";
 import { deleteProduct, getProducts } from "../services/products.service";
 
 const AdminDashboardPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   // States
   const [products, setProducts] = useState<Product[]>([]);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+
+  // Ref
+  const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function loadProducts() {
       const products = await getProducts();
       setProducts(products);
+
+      const editProductId = (
+        location.state as {
+          editProductId?: string;
+          returnTo?: string;
+        } | null
+      )?.editProductId;
+
+      if (!editProductId) {
+        return;
+      }
+
+      const productToEdit = products.find(
+        (product) => product.id === editProductId,
+      );
+
+      if (!productToEdit) {
+        return;
+      }
+
+      setEditingProduct(productToEdit);
+
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 0);
     }
 
     loadProducts();
-  }, []);
-
-  // Ref
-  const formRef = useRef<HTMLDivElement>(null);
+  }, [location.state]);
 
   // Handlers
   const handleAddProduct = (newProduct: Product) => {
@@ -56,6 +87,18 @@ const AdminDashboardPage = () => {
   };
 
   const handleCancelEdit = () => {
+    const returnTo = (
+      location.state as {
+        editProductId?: string;
+        returnTo?: string;
+      } | null
+    )?.returnTo;
+
+    if (returnTo) {
+      navigate(returnTo);
+      return;
+    }
+
     setEditingProduct(null);
   };
 
