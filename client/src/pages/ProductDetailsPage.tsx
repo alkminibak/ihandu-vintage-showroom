@@ -16,7 +16,9 @@ const ProductDetailsPage = () => {
   const [error, setError] = useState(false);
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+
+  const isAdmin = user?.role === "admin";
 
   const isWishlisted =
     isAuthenticated && product ? isInWishlist(product.id) : false;
@@ -122,31 +124,35 @@ const ProductDetailsPage = () => {
                 {product.description}
               </p>
 
-              <button
-                type="button"
-                disabled={isGuest}
-                title={
-                  isGuest ? "Register or log in to use the wishlist" : undefined
-                }
-                onClick={async () => {
-                  if (isWishlisted) {
-                    await removeFromWishlist(product.id);
-                  } else {
-                    await addToWishlist(product.id);
+              {!isAdmin && (
+                <button
+                  type="button"
+                  disabled={isGuest}
+                  title={
+                    isGuest
+                      ? "Register or log in to use the wishlist"
+                      : undefined
                   }
-                }}
-                className={`mt-8 border px-6 py-3 text-sm transition-colors md:mt-10 md:px-8 ${
-                  isGuest
-                    ? "cursor-default border-text-muted bg-background text-text-muted opacity-50"
-                    : "border-accent bg-accent-light text-text hover:bg-accent"
-                }`}
-              >
-                {isGuest
-                  ? "Register / Login to use wishlist"
-                  : isWishlisted
-                    ? "Remove from wishlist"
-                    : "Add to wishlist"}
-              </button>
+                  onClick={async () => {
+                    if (isWishlisted) {
+                      await removeFromWishlist(product.id);
+                    } else {
+                      await addToWishlist(product.id);
+                    }
+                  }}
+                  className={`mt-8 border px-6 py-3 text-sm transition-colors md:mt-10 md:px-8 ${
+                    isGuest
+                      ? "cursor-default border-text-muted bg-background text-text-muted opacity-50"
+                      : "border-accent bg-accent-light text-text hover:bg-accent"
+                  }`}
+                >
+                  {isGuest
+                    ? "Register / Login to use wishlist"
+                    : isWishlisted
+                      ? "Remove from wishlist"
+                      : "Add to wishlist"}
+                </button>
+              )}
             </div>
           </section>
         </main>

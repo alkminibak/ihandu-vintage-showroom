@@ -15,8 +15,9 @@ const ProductCard = ({
   showWishlistButton = true,
 }: ProductCardProps) => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
+  const isAdmin = user?.role === "admin";
   const isGuest = !isAuthenticated;
   const isWishlisted = isAuthenticated && isInWishlist(product.id);
   return (
@@ -40,7 +41,7 @@ const ProductCard = ({
       <div className="mt-2 flex items-center justify-between">
         <p className="text-sm text-text-muted md:text-base">€{product.price}</p>
 
-        {showWishlistButton && (
+        {showWishlistButton && !isAdmin && (
           <button
             type="button"
             disabled={isGuest}

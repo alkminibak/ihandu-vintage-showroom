@@ -62,22 +62,26 @@ const Header = () => {
           </NavLink>
         )}
 
-        <span
-          aria-hidden="true"
-          className="hidden h-5 w-px bg-accent-light lg:block"
-        />
+        {user?.role !== "admin" && (
+          <>
+            <span
+              aria-hidden="true"
+              className="hidden h-5 w-px bg-accent-light lg:block"
+            />
 
-        <NavLink
-          to="/wishlist"
-          className={({ isActive }) =>
-            `flex items-center gap-2 transition-colors hover:text-accent ${
-              isActive ? "text-accent" : ""
-            }`
-          }
-        >
-          My Wishlist
-          <span className="text-accent">♡</span>
-        </NavLink>
+            <NavLink
+              to="/wishlist"
+              className={({ isActive }) =>
+                `flex items-center gap-2 transition-colors hover:text-accent ${
+                  isActive ? "text-accent" : ""
+                }`
+              }
+            >
+              My Wishlist
+              <span className="text-accent">♡</span>
+            </NavLink>
+          </>
+        )}
       </nav>
     </header>
   );
