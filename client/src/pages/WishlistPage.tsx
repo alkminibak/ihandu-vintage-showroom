@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import ProductCard from "../components/ProductCard";
@@ -18,13 +20,24 @@ const WishlistPage = () => {
 
         <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10 md:px-8 md:py-12 lg:px-16 lg:py-14">
           <section>
-            <p className="text-xs uppercase tracking-widest text-text-muted">
-              Saved pieces
-            </p>
+            <div className="flex items-start justify-between gap-6">
+              <div>
+                <p className="text-xs uppercase tracking-widest text-text-muted">
+                  Saved pieces
+                </p>
 
-            <h1 className="mt-4 text-xl font-light text-text md:text-3xl">
-              My Wishlist
-            </h1>
+                <h1 className="mt-4 text-xl font-light text-text md:text-3xl">
+                  My Wishlist
+                </h1>
+              </div>
+
+              <Link
+                to="/"
+                className="border-b border-accent pb-1 text-xs text-text transition-colors hover:text-accent md:text-sm"
+              >
+                Back to collection
+              </Link>
+            </div>
 
             <EmptyWishlist isGuest />
           </section>
@@ -55,13 +68,24 @@ const WishlistPage = () => {
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10 md:px-8 md:py-12 lg:px-16 lg:py-14">
         <section>
-          <p className="text-xs uppercase tracking-widest text-text-muted">
-            Saved pieces ({wishlistProducts.length})
-          </p>
+          <div className="flex items-start justify-between gap-6">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-text-muted">
+                Saved pieces ({wishlistProducts.length})
+              </p>
 
-          <h1 className="mt-4 text-xl font-light text-text md:text-3xl">
-            My Wishlist
-          </h1>
+              <h1 className="mt-4 text-xl font-light text-text md:text-3xl">
+                My Wishlist
+              </h1>
+            </div>
+
+            <Link
+              to="/"
+              className="border-b border-accent pb-1 text-sm text-text transition-colors hover:text-accent text-xs md:text-sm"
+            >
+              Back to collection
+            </Link>
+          </div>
 
           {!wishlistProducts.length ? (
             <EmptyWishlist />

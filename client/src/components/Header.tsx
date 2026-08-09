@@ -26,6 +26,8 @@ const Header = () => {
       </Link>
 
       <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs md:gap-x-5 md:text-sm lg:justify-end">
+        {user && user.role !== "admin" && <span>{user.firstName}</span>}
+
         {user?.role === "admin" && (
           <NavLink
             to="/admin"
@@ -43,7 +45,7 @@ const Header = () => {
           <button
             type="button"
             onClick={handleLogout}
-            className="transition-colors hover:text-accent"
+            className="cursor-pointer transition-colors hover:text-accent"
           >
             Logout
           </button>
