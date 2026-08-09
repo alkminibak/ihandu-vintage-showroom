@@ -165,6 +165,11 @@ On Windows, the `.env` file can also be created manually inside the `client` dir
 
 Clone the repository and install the backend and frontend dependencies separately.
 
+```bash
+git clone https://github.com/alkminibak/ihandu-vintage-showroom.git
+cd ihandu-vintage-showroom
+```
+
 ### 1. Backend
 
 ```bash
