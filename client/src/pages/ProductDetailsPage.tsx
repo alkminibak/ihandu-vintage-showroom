@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { getProductById } from "../services/products.service";
+import { deleteProduct, getProductById } from "../services/products.service";
 import type { Product } from "../types/Product";
 import { useWishlist } from "../hooks/useWishlist";
 import { useAuth } from "../hooks/useAuth";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(Boolean(id));
@@ -41,6 +42,27 @@ const ProductDetailsPage = () => {
         setLoading(false);
       });
   }, [id]);
+
+  const handleDeleteProduct = async () => {
+    if (!product) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${product.title}"?`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteProduct(product.id);
+      navigate("/");
+    } catch {
+      window.alert("Failed to delete product.");
+    }
+  };
 
   if (loading) {
     return (
@@ -151,6 +173,15 @@ const ProductDetailsPage = () => {
                     : isWishlisted
                       ? "Remove from wishlist"
                       : "Add to wishlist"}
+                </button>
+              )}
+              {isAdmin && (
+                <button
+                  type="button"
+                  onClick={handleDeleteProduct}
+                  className="mt-8 border border-text-muted px-6 py-3 text-sm text-text transition-colors hover:bg-text-muted/20 md:mt-10 md:px-8"
+                >
+                  Delete product
                 </button>
               )}
             </div>
