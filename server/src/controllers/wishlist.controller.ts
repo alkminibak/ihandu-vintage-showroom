@@ -1,59 +1,35 @@
 import type { Request, Response } from "express";
-import { Types } from "mongoose";
-import { WishlistModel } from "../models/Wishlist.js";
-import { NotFoundError } from "../errors/NotFoundError.js";
-import { toWishlistResponse } from "../mappers/wishlist.mapper.js";
-import { ProductModel } from "../models/Product.js";
+
+import * as wishlistService from "../services/wishlist.service.js";
 
 export const getWishlist = async (request: Request, response: Response) => {
-  const userId = request.user?.userId;
-  const wishlist = await WishlistModel.find({
-    userId,
-  }).populate("productId");
+  const userId = request.user!.userId;
 
-  response.json(wishlist.map(toWishlistResponse));
+  const wishlist = await wishlistService.getWishlist(userId);
+
+  response.json(wishlist);
 };
 
 export const addToWishlist = async (
   request: Request<{ productId: string }>,
   response: Response,
 ) => {
-  const userId = request.user?.userId;
+  const userId = request.user!.userId;
   const { productId } = request.params;
 
-  const product = await ProductModel.findById(productId);
+  const wishlistItem = await wishlistService.addToWishlist(userId, productId);
 
-  if (!product) {
-    throw new NotFoundError("Product not found");
-  }
-
-  const wishlistData = {
-    userId: new Types.ObjectId(userId),
-    productId: new Types.ObjectId(productId),
-  };
-
-  const wishlistItem = await WishlistModel.create(wishlistData);
-
-  await wishlistItem.populate("productId");
-
-  response.status(201).json(toWishlistResponse(wishlistItem));
+  response.status(201).json(wishlistItem);
 };
 
 export const removeFromWishlist = async (
   request: Request<{ productId: string }>,
   response: Response,
 ) => {
-  const userId = request.user?.userId;
+  const userId = request.user!.userId;
   const { productId } = request.params;
 
-  const deletedWishlistItem = await WishlistModel.findOneAndDelete({
-    userId: new Types.ObjectId(userId),
-    productId: new Types.ObjectId(productId),
-  });
-
-  if (!deletedWishlistItem) {
-    throw new NotFoundError("Wishlist item not found");
-  }
+  await wishlistService.removeFromWishlist(userId, productId);
 
   response.status(204).send();
 };
