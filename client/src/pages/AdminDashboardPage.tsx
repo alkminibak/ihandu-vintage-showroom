@@ -104,30 +104,32 @@ const AdminDashboardPage = () => {
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-8 sm:px-8 md:py-10 lg:px-6">
-      <h1 className="text-3xl font-light text-text md:text-4xl">
-        Admin Dashboard
-      </h1>
-
-      <div ref={formRef} className="mt-8 md:mt-10">
-        <ProductForm
-          onAddProduct={handleAddProduct}
-          onUpdateProduct={handleUpdateProduct}
-          onCancelEdit={handleCancelEdit}
-          editingProduct={editingProduct}
-        />
-      </div>
-
-      <section className="mt-12 md:mt-16">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-light text-text">Products</h2>
+      <div className="max-w-3xl">
+        <div className="flex items-center justify-between gap-6">
+          <h1 className="text-2xl font-light text-text md:text-3xl">
+            Admin Dashboard
+          </h1>
 
           <Link
             to="/"
-            className="border-b border-accent pb-1 text-sm text-text transition-colors hover:text-accent"
+            className="shrink-0 border-b border-accent pb-1 text-sm text-text transition-colors hover:text-accent"
           >
             Back to collection
           </Link>
         </div>
+
+        <div ref={formRef} className="mt-8 md:mt-10">
+          <ProductForm
+            onAddProduct={handleAddProduct}
+            onUpdateProduct={handleUpdateProduct}
+            onCancelEdit={handleCancelEdit}
+            editingProduct={editingProduct}
+          />
+        </div>
+      </div>
+
+      <section className="mt-12 md:mt-16">
+        <h2 className="text-2xl font-light text-text">Products</h2>
 
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
